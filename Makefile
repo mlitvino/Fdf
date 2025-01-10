@@ -6,7 +6,7 @@
 #    By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/31 17:29:24 by mlitvino          #+#    #+#              #
-#    Updated: 2025/01/07 16:55:46 by mlitvino         ###   ########.fr        #
+#    Updated: 2025/01/09 16:12:59 by mlitvino         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ OBJ = $(SRC:%.c=%.o)
 
 .SECONDARY: $(OBJ)
 
-all: $(LIBFT) $(NAME)
+all: $(LIBFT) $(NAME) run
 
 %.o: %.c $(INCLD)
 	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
@@ -50,5 +50,9 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+run:
+	./$(NAME)
+# DEL
 
 .PHONY: all clean fclean re
