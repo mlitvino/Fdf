@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 14:14:41 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/01/10 16:43:01 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/02/01 22:47:55 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-int	close(int keycode, t_vars *vars)
-{
-	mlx_destroy_image(vars->mlx, vars ->win);
-	return (0);
-}
 void	ft_make_gradient(int *color)
 {
 	unsigned char *r;
@@ -111,17 +106,42 @@ void	draw_line(t_data *img, int color, int x)
 		draw_line(img, 0x00FF0000, ++x);
 }
 
+int resize_window(t_vars *vars)
+{
+    printf("Window resized: New size: %d x %d\n", vars->width, vars->height);
+
+    // Destroy the old window
+    mlx_destroy_window(vars->mlx, vars->win);
+
+    // Create a new window with updated size
+    vars->win = mlx_new_window(vars->mlx, vars->width, vars->height, "Resizable Window");
+
+    return (0);
+}
+
+// Event handler for ConfigureNotify (window resizing)
+int handle_resize(int event, void *param)
+{
+    t_vars *vars = (t_vars *)param;
+
+    if (event == ConfigureNotify)
+    {
+        resize_window(vars);
+    }
+    return (0);
+}
+
 int	main(void)
 {
-	void	*mlx;
-	void	*mlx_win;
 	t_data	img;
 	t_vars	vars;
 	int		color = 0x00FF0000;
 
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Fdf");
-	img.img = mlx_new_image(mlx, 1920, 1080);
+	vars.mlx = mlx_init();
+	vars.width = 1920;
+	vars.height = 1080;
+	vars.win = mlx_new_window(vars.mlx, vars.width, vars.height, "Fdf");
+	img.img = mlx_new_image(vars.mlx, vars.width, vars.height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 								&img.endian);
 	//printci(&img);
@@ -129,11 +149,16 @@ int	main(void)
 	draw_circle(&img, 500, 500, 20, color);
 	draw_line(&img, 0x00FF0000, 300);
 
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 
-	vars.mlx = mlx;
-	vars.win = mlx_win;
-	mlx_hook(vars.win, 2, 1L<<0, close, &vars);
+	mlx_hook(vars.win, KeyPress, KeyPressMask, key_hook, &vars);
+	mlx_hook(vars.win, DestroyNotify, StructureNotifyMask, destroy_hook, &vars);
+	//mlx_hook(vars.win, MotionNotify, PointerMotionMask, i_see, &vars);
+	mlx_hook(vars.win, ConfigureNotify, StructureNotifyMask, handle_resize, &vars);
 
 	mlx_loop(vars.mlx);
+	return (0);
 }
+
+
+
