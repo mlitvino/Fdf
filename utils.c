@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.c                                              :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/07 14:14:41 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/02/16 20:00:19 by mlitvino         ###   ########.fr       */
+/*   Created: 2025/02/11 18:17:38 by mlitvino          #+#    #+#             */
+/*   Updated: 2025/02/11 18:18:09 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	main(int argc, char *argv[])
+int	count_word(char *line)
 {
-	t_data	data;
+	int	count;
+	int	i;
 
-	if (argc != 2)
-		print_err("Error: Wrong input format\n");
-	check_file_name(argv[1]);
-	init_data(&data);
-	check_map(argv[1], &data);
-	get_map(argv[1], &data);
-	init_mlx(&data);
-	return (0);
+	i = 0;
+	count = 0;
+	while (line[i] && line[i] != '\n')
+	{
+		while (line[i] && line[i] != '\n' && line[i] == ' ')
+			i++;
+		if (line[i] && line[i] != '\n')
+		{
+			count++;
+			while (line[i] && line[i] != '\n' && line[i] != ' ')
+				i++;
+		}
+	}
+	return (count);
+}
+
+void	print_err(char	*error)
+{
+	ft_printf("%s\n", error);
+	exit (1);
 }

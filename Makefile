@@ -6,12 +6,12 @@
 #    By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/31 17:29:24 by mlitvino          #+#    #+#              #
-#    Updated: 2025/02/01 22:46:27 by mlitvino         ###   ########.fr        #
+#    Updated: 2025/02/18 22:23:00 by mlitvino         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS =  -I$(LIBFT_DIR)/$(INCLD_DIR)
+CFLAGS =  -I$(LIBFT_DIR)/$(INCLD_DIR) -Wall -Wextra -Werror
 # -Wall -Wextra -Werror
 
 NAME = fdf
@@ -22,7 +22,7 @@ LIBFT_DIR = ./libft
 MLX_DIR = ./minilibx-linux
 INCLD_DIR = ./includes
 
-SRC = fdf.c hooks.c
+SRC = checks.c draw.c fdf.c get_map.c hooks.c inits.c utils.c
 INCLD = fdf.h
 
 OBJ = $(SRC:%.c=%.o)
@@ -51,8 +51,8 @@ fclean: clean
 
 re: fclean all
 
-run: $(NAME)
-	./$(NAME)
+run: $(NAME) clean
+	./$(NAME) test.fdf
 # DEL
 
 .PHONY: all clean fclean re
