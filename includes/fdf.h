@@ -36,7 +36,6 @@
 # define BUTTON_PRESS 4
 # define KEY_PRESS 2
 # define KEY_PRESS_MASK 1L
-# define BUTTON_PRESS_MASK 1L
 
 typedef struct s_3dpoint
 {

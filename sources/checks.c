@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:05:09 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/02/26 16:36:50 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:36:05 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	check_map(char *file, t_data *data)
 		free(line);
 		line = get_next_line(fd);
 	}
-	if (data->map_h < 2 && data->map_w < 2)
-		print_err("Error: invalid map");
 	close(fd);
+	if (data->map_h < 2 || data->map_w < 2)
+		print_err("Error: invalid map");
 }

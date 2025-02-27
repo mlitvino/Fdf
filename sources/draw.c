@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 17:36:57 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/02/26 14:38:56 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:54:29 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	if (x >= 0 && x < data->win_w && y >= 0 && y < data->win_h)
+	{
+		dst = data->addr + (y * data->line_length + x
+				* (data->bits_per_pixel / 8));
+		*(unsigned int *)dst = color;
+	}
 }
 
 double	calculate(t_delta *d, t_2dpoint *p0, t_2dpoint *p1, t_2dpoint *p3)
@@ -65,17 +69,14 @@ void	draw_line(t_data *data, t_2dpoint p0, t_2dpoint p1)
 
 	i = 0;
 	step = calculate(&d, &p0, &p1, &p3);
-	while (i++ <= step)
+	while (i <= step)
 	{
 		color.t = (double)(i - 1) / step;
 		color.gradient = get_gradient(p0.color, p1.color, color.t);
-		if ((int)p3.x >= 0 && (int)p3.x < data->win_w
-			&& (int)p3.y >= 0 && (int)p3.y < data->win_h)
-		{
-			my_mlx_pixel_put(data, (int)p3.x, (int)p3.y, color.gradient);
-		}
+		my_mlx_pixel_put(data, (int)p3.x, (int)p3.y, color.gradient);
 		p3.x += d.dx;
 		p3.y += d.dy;
+		i++;
 	}
 }
 
