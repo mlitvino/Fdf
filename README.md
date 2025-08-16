@@ -18,3 +18,5 @@ Key features of the project include:
 
 * Move: W - up, A - left, S - down, D - right
 * Zoom: mouse scroll up and mouse scroll down
+
+<img width="1929" height="1106" alt="image" src="https://github.com/user-attachments/assets/e6df4598-60a2-4dd3-b3da-e6a280abbfd9" />
